@@ -40,6 +40,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class CsvScannableTable extends CsvTable implements ScannableTable {
   /**
    * Creates a CsvScannableTable.
+   *
+   * 构造函数，创建一个 CsvScannableTable对象
+   *
    */
   CsvScannableTable(Source source, RelProtoDataType protoRowType) {
     super(source, protoRowType);
