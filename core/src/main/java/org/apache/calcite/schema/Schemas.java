@@ -424,9 +424,10 @@ public final class Schemas {
     };
   }
 
-  /** Returns an implementation of
-   * {@link RelProtoDataType}
-   * that asks a given table for its row type with a given type factory. */
+  /**
+   * Returns an implementation of {@link RelProtoDataType}
+   * that asks a given table for its row type with a given type factory.
+   */
   public static RelProtoDataType proto(final Table table) {
     return table::getRowType;
   }

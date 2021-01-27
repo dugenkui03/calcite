@@ -18,16 +18,20 @@ package org.apache.calcite.adapter.redis;
 
 /**
  * Define the data processing type of redis.
+ *
+ * 定义 redis 的数据处理类型
  */
 public enum RedisDataFormat {
   /**
    * Treat redis key and value as a string format.
+   *
+   * 将其 key value 看作 string 类型。
    */
   RAW("raw"),
 
   /**
-   * Treat redis key and value as a csv format And parse the string
-   * to get the corresponding field content,The default separator is colon.
+   * Treat redis key and value as a csv format
+   * And parse the string to get the corresponding field content,The default separator is colon.
    */
   CSV("csv"),
 

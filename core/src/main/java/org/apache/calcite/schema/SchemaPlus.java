@@ -92,7 +92,9 @@ public interface SchemaPlus extends Schema {
   /** Adds a type to this schema.  */
   void add(String name, RelProtoDataType type);
 
-  /** Adds a lattice to this schema. */
+  /**
+   * Adds a lattice to this schema.
+   */
   void add(String name, Lattice lattice);
 
   @Override boolean isMutable();

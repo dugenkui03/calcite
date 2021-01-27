@@ -18,13 +18,19 @@ package org.apache.calcite.adapter.redis;
 
 /**
  * Set the redis config.
+ *
+ * redis配置类
  */
 public class RedisConfig {
+  /**
+   * 主机、端口、数据库和密码
+   */
   private final String host;
   private final int port;
   private final int database;
   private final String password;
 
+  // 构造之后、只有读取方法、不能修改对象。
   public RedisConfig(String host, int port, int database, String password) {
     this.host = host;
     this.port = port;

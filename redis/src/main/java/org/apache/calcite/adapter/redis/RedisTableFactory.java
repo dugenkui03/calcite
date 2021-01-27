@@ -37,8 +37,18 @@ public class RedisTableFactory implements TableFactory {
   private RedisTableFactory() {
   }
 
-  // name that is also the same name as a complex metric
-  @Override public Table create(SchemaPlus schema, String tableName, Map operand,
+  /**
+   * Creates a Table：name that is also the same name as a complex metric
+   *
+   * @param schema Schema this table belongs to
+   * @param tableName Name of this table
+   * @param operand The "operand" JSON property
+   * @param rowType Row type. Specified if the "columns" JSON property.
+   */
+  @Override
+  public Table create(SchemaPlus schema,
+      String tableName,
+      Map operand,
       RelDataType rowType) {
     final RedisSchema redisSchema = schema.unwrap(RedisSchema.class);
     final RelProtoDataType protoRowType =

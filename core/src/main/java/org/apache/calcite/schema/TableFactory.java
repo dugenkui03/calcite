@@ -21,6 +21,8 @@ import org.apache.calcite.rel.type.RelDataType;
 import java.util.Map;
 
 /**
+ * fixme 牛逼。
+ *
  * Factory for {@link Table} objects.
  *
  * <p>A table factory allows you to include custom tables in a model file.

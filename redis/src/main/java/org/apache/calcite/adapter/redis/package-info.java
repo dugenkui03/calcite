@@ -17,5 +17,7 @@
 
 /**
  * Redis adapter.
+ *
+ * redis适配器。
  */
 package org.apache.calcite.adapter.redis;

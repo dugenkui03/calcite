@@ -21,8 +21,13 @@ import java.util.List;
 
 /**
  * get the redis table's field info.
+ *
+ * 获取 redis表 的字段信息。
  */
 public class RedisTableFieldInfo {
+  /**
+   * 表名，数据格式，字段list，key分隔符(默认 :)；
+   */
   private String tableName;
   private String dataFormat;
   private List<LinkedHashMap<String, Object>> fields;

@@ -24,5 +24,8 @@ package org.apache.calcite.linq4j.function;
  * @param <T1> Type of argument #1
  */
 public interface Function2<T0, T1, R> extends Function<R> {
+  /**
+   * 两个参数
+   */
   R apply(T0 v0, T1 v1);
 }

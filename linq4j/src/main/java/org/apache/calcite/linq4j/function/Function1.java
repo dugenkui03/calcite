@@ -27,6 +27,8 @@ public interface Function1<T0, R> extends Function<R> {
    * The identity function.
    *
    * @see Functions#identitySelector()
+   *
+   * 默认 public static
    */
   Function1<Object, Object> IDENTITY = v0 -> v0;
 
