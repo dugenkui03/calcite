@@ -58,8 +58,10 @@ public abstract class AbstractRelOptPlanner implements RelOptPlanner {
   //~ Instance fields --------------------------------------------------------
 
   /**
-   * Maps rule description to rule, just to ensure that rules' descriptions
-   * are unique.
+   * Maps rule description to rule,
+   * just to ensure that rules' descriptions are unique.
+   *
+   * 优化规则到规则对象的映射。
    */
   protected final Map<String, RelOptRule> mapDescToRule = new LinkedHashMap<>();
 
@@ -138,7 +140,8 @@ public abstract class AbstractRelOptPlanner implements RelOptPlanner {
     }
   }
 
-  @Override public List<RelOptRule> getRules() {
+  @Override
+  public List<RelOptRule> getRules() {
     return ImmutableList.copyOf(mapDescToRule.values());
   }
 

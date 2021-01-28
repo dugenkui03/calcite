@@ -37,6 +37,8 @@ import java.util.Set;
 
 /**
  * A <code>SqlParser</code> parses a SQL statement.
+ *
+ * tag: 解析sql语句。
  */
 public class SqlParser {
   public static final int DEFAULT_IDENTIFIER_MAX_LENGTH = 128;

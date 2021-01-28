@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * RelDataType represents the type of a scalar expression
  * or entire row returned from a relational expression.
- *
+ * kp: 某一个表/结构类型的类型信息，和table一一对应。
  * fixme
  *     RelDataType 代表一个标量表达式，或者 关系表达式返回的数据。
  *
@@ -45,6 +45,7 @@ public interface RelDataType {
 
   /**
    * Queries whether this is a structured type.
+   * 是否是结构化类型。
    *
    * @return whether this type has fields; examples include rows and
    * user-defined structured types in SQL, and classes in Java
@@ -61,7 +62,7 @@ public interface RelDataType {
    * Gets the fields in a struct type.
    * The field count is equal to the size of the returned list.
    *
-   * fixme 返回结构化类型的字段集合信息。
+   * fixme 返回某一类型的所有字段信息集合。
    *
    * @return read-only list of fields
    */
@@ -113,6 +114,7 @@ public interface RelDataType {
 
   /**
    * Queries whether this type allows null values.
+   * 是否允许为null。
    *
    * @return whether type allows null values
    */

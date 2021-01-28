@@ -33,6 +33,8 @@ import java.util.regex.Pattern;
  * A <code>RelOptPlanner</code> is a query optimizer: it transforms a relational
  * expression into a semantically equivalent relational expression, according to
  * a given set of rules and a cost model.
+ *
+ * tag: RelOptPlanner 是一个查询优化器，可以将一个关系表达式转换成相等语义但是效率更高的表达式（通过优化规则和消费模型）
  */
 public interface RelOptPlanner {
   //~ Static fields/initializers ---------------------------------------------

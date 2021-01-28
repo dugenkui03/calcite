@@ -111,6 +111,7 @@ public interface Schema {
 
   /**
    * Returns a sub-schema with a given name, or null.
+   * fixme 子模式
    *
    * @param name Sub-schema name
    * @return Sub-schema with a given name, or null
@@ -119,6 +120,7 @@ public interface Schema {
 
   /**
    * Returns the names of this schema's child schemas.
+   * tag: 返回当前模式的子模式：模式是可以嵌套的。
    *
    * @return Names of this schema's child schemas
    */

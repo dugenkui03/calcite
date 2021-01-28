@@ -44,7 +44,9 @@ import org.apache.calcite.sql.SqlNode;
  * @see TableMacro
  */
 public interface Table {
-  /** Returns this table's row type.
+
+  /**
+   * Returns this table's row type.
    *
    * <p>This is a struct type whose
    * fields describe the names and types of the columns in this table.</p>
@@ -60,8 +62,7 @@ public interface Table {
 
   /**
    * Returns a provider of statistics about this table.
-   *
-   * 返回关于表的 统计数据provider。
+   * kp: 返回该表的统计信息，用于优化。
    */
   Statistic getStatistic();
 

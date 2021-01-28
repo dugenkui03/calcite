@@ -22,6 +22,7 @@ import java.util.Set;
 
 /**
  * Directed graph.
+ * tag: 有向图。
  *
  * @param <V> Vertex type
  * @param <E> Edge type

@@ -32,8 +32,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * Abstract base class for a rule which converts from one calling convention to
- * another without changing semantics.
+ * Abstract base class for a rule
+ * which converts from one calling convention to another without changing semantics.
+ *
+ * tag：规则的抽象类型：将一个调用回话转换为另一个会话，但是不改变语义。
  */
 public abstract class ConverterRule
     extends RelRule<ConverterRule.Config> {
@@ -56,7 +58,8 @@ public abstract class ConverterRule
 
     // Most sub-classes are concerned with converting one convention to
     // another, and for them, the "out" field is a convenient short-cut.
-    this.out = outTrait instanceof Convention ? (Convention) outTrait
+    this.out = outTrait instanceof Convention
+        ? (Convention) outTrait
         : null;
   }
 
@@ -142,9 +145,11 @@ public abstract class ConverterRule
         Objects.toString(descriptionPrefix, "ConverterRule"), in, out);
   }
 
-  /** Converts a relational expression to the target trait(s) of this rule.
+  /**
+   * Converts a relational expression to the target trait(s) of this rule.
    *
-   * <p>Returns null if conversion is not possible. */
+   * <p>Returns null if conversion is not possible.
+   */
   public abstract RelNode convert(RelNode rel);
 
   /**
@@ -173,7 +178,11 @@ public abstract class ConverterRule
 
   //~ Inner Classes ----------------------------------------------------------
 
-  /** Rule configuration. */
+  /**
+   * ConverterRule对象创建的配置。
+   *
+   * Rule configuration.
+   */
   public interface Config extends RelRule.Config {
     Config INSTANCE = EMPTY.as(Config.class);
 

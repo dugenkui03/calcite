@@ -25,10 +25,9 @@ import java.util.List;
 
 /**
  * Statistics about a {@link Table}.
- *
  * <p>Each of the methods may return {@code null} meaning "not known".</p>
  *
- * fixme 关于表的统计数据，每个方法都可能返回null、表示未知。
+ * fixme 关于表的统计数据，每个方法都可能返回null、表示未知。用于查询优化？
  *
  * @see Statistics
  */

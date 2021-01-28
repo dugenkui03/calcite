@@ -67,8 +67,9 @@ import java.util.Queue;
 import java.util.Set;
 
 /**
- * HepPlanner is a heuristic implementation of the {@link RelOptPlanner}
- * interface.
+ * HepPlanner is a heuristic implementation of the {@link RelOptPlanner} interface.
+ *
+ * 启发式的查询优化器。
  */
 public class HepPlanner extends AbstractRelOptPlanner {
   //~ Instance fields --------------------------------------------------------

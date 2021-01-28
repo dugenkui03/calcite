@@ -29,14 +29,17 @@ package org.apache.calcite.plan;
 public interface RelOptCost {
   //~ Methods ----------------------------------------------------------------
 
+  // 需要处理的行数
   /** Returns the number of rows processed; this should not be
    * confused with the row count produced by a relational expression
    * ({@link org.apache.calcite.rel.RelNode#estimateRowCount}). */
   double getRows();
 
+  // cpu资源
   /** Returns usage of CPU resources. */
   double getCpu();
 
+  // io资源
   /** Returns usage of I/O resources. */
   double getIo();
 

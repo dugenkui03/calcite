@@ -83,6 +83,7 @@ import java.util.regex.Pattern;
  * by transforming expressions selectively
  * according to a dynamic programming algorithm.
  *
+ * kp: 基于消费模型的优化器。
  * fixme VolcanoPlanner 通过使用动态规划算法、有选择的转换表达式来优化查询。
  */
 public class VolcanoPlanner extends AbstractRelOptPlanner {
@@ -697,7 +698,9 @@ public class VolcanoPlanner extends AbstractRelOptPlanner {
     this.noneConventionHasInfiniteCost = infinite;
   }
 
-  @Override public RelOptCost getCost(RelNode rel, RelMetadataQuery mq) {
+  // 获取关系表达式rel的开销。
+  @Override
+  public RelOptCost getCost(RelNode rel, RelMetadataQuery mq) {
     assert rel != null : "pre-condition: rel != null";
     if (rel instanceof RelSubset) {
       return ((RelSubset) rel).bestCost;

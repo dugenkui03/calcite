@@ -44,6 +44,7 @@ public interface RelOptTable extends Wrapper {
    * respect to the Connection producing this table.
    *
    * @return qualified name
+   *         fixme：咋看得猜很久，但是实际运行后，一下子就能看出是什么东西。
    */
   List<String> getQualifiedName();
 

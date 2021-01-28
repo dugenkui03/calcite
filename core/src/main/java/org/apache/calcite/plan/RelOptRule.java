@@ -36,6 +36,10 @@ import javax.annotation.Nonnull;
  * A <code>RelOptRule</code> transforms an expression into another. It has a
  * list of {@link RelOptRuleOperand}s, which determine whether the rule can be
  * applied to a particular section of the tree.
+ * kp: 1. 关系表达式优化规则：将表达式转换为等价高效的另一个表达式，
+ *     List<RelOptRuleOperand>数据判断规则是否可以用到 抽象语法树特定的部分。
+ *
+ * kp: 2. 两种类型规则：converter 和 transformer。
  *
  * <p>The optimizer figures out which rules are applicable, then calls
  * {@link #onMatch} on each of them.</p>

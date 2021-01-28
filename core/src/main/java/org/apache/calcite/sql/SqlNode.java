@@ -188,6 +188,7 @@ public abstract class SqlNode implements Cloneable {
 
   /**
    * Writes a SQL representation of this node to a writer.
+   * <p>tag: 将当前对象转换为sql语句。
    *
    * <p>The <code>leftPrec</code> and <code>rightPrec</code> parameters give
    * us enough context to decide whether we need to enclose the expression in

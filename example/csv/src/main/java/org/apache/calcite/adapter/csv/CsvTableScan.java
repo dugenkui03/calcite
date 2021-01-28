@@ -44,8 +44,10 @@ import java.util.List;
 
 /**
  * Relational expression representing a scan of a CSV file.
+ * kp：关系表达式、代表CSV文件的扫描，包含表信息
  *
  * <p>Like any table scan, it serves as a leaf node of a query tree.
+ * kp: 同任何TableScan一样，在树结构中定位为叶子节点。
  */
 public class CsvTableScan extends TableScan implements EnumerableRel {
   final CsvTranslatableTable csvTable;
