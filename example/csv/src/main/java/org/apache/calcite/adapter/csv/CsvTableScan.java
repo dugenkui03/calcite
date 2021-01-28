@@ -51,8 +51,10 @@ public class CsvTableScan extends TableScan implements EnumerableRel {
   final CsvTranslatableTable csvTable;
   final int[] fields;
 
-  protected CsvTableScan(RelOptCluster cluster, RelOptTable table,
-      CsvTranslatableTable csvTable, int[] fields) {
+  protected CsvTableScan(RelOptCluster cluster,
+                         RelOptTable table,
+                         CsvTranslatableTable csvTable,
+                         int[] fields) {
     super(cluster, cluster.traitSetOf(EnumerableConvention.INSTANCE), ImmutableList.of(), table);
     this.csvTable = csvTable;
     this.fields = fields;
@@ -65,26 +67,30 @@ public class CsvTableScan extends TableScan implements EnumerableRel {
     return new CsvTableScan(getCluster(), table, csvTable, fields);
   }
 
-  @Override public RelWriter explainTerms(RelWriter pw) {
+  @Override
+  public RelWriter explainTerms(RelWriter pw) {
     return super.explainTerms(pw)
         .item("fields", Primitive.asList(fields));
   }
 
-  @Override public RelDataType deriveRowType() {
+  @Override
+  public RelDataType deriveRowType() {
     final List<RelDataTypeField> fieldList = table.getRowType().getFieldList();
-    final RelDataTypeFactory.Builder builder =
-        getCluster().getTypeFactory().builder();
+    final RelDataTypeFactory.Builder builder = getCluster().getTypeFactory().builder();
     for (int field : fields) {
       builder.add(fieldList.get(field));
     }
+
     return builder.build();
   }
 
-  @Override public void register(RelOptPlanner planner) {
+  @Override
+  public void register(RelOptPlanner planner) {
     planner.addRule(CsvRules.PROJECT_SCAN);
   }
 
-  @Override public RelOptCost computeSelfCost(RelOptPlanner planner,
+  @Override
+  public RelOptCost computeSelfCost(RelOptPlanner planner,
       RelMetadataQuery mq) {
     // Multiply the cost by a factor that makes a scan more attractive if it
     // has significantly fewer fields than the original scan.
@@ -94,11 +100,12 @@ public class CsvTableScan extends TableScan implements EnumerableRel {
     // For example, if table has 3 fields, project has 1 field,
     // then factor = (1 + 2) / (3 + 2) = 0.6
     return super.computeSelfCost(planner, mq)
-        .multiplyBy(((double) fields.length + 2D)
+        .multiplyBy(((double) fields.length +2D)
             / ((double) table.getRowType().getFieldCount() + 2D));
   }
 
-  @Override public Result implement(EnumerableRelImplementor implementor, Prefer pref) {
+  @Override
+  public Result implement(EnumerableRelImplementor implementor, Prefer pref) {
     PhysType physType =
         PhysTypeImpl.of(
             implementor.getTypeFactory(),

@@ -21,8 +21,6 @@ import org.apache.calcite.rel.type.RelDataType;
 import java.util.Map;
 
 /**
- * fixme 牛逼。
- *
  * Factory for {@link Table} objects.
  *
  * <p>A table factory allows you to include custom tables in a model file.
@@ -73,6 +71,7 @@ import java.util.Map;
  *
  * @param <T> Sub-type of table created by this factory
  */
+// 只生产 Table 的静态工厂类。
 public interface TableFactory<T extends Table> {
   /** Creates a Table.
    *
