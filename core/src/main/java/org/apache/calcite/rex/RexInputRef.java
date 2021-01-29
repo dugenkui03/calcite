@@ -25,6 +25,7 @@ import java.util.List;
 
 /**
  * Variable which references a field of an input relational expression.
+ * tag 变量，引用了输入表达式的字段。
  *
  * <p>Fields of the input are 0-based. If there is more than one input, they are
  * numbered consecutively. For example, if the inputs to a join are</p>

@@ -18,7 +18,9 @@ package org.apache.calcite.util;
 
 import org.apache.commons.io.input.ReaderInputStream;
 
+import com.fasterxml.jackson.annotation.OptBoolean;
 import com.google.common.io.CharSource;
+import com.sun.javafx.scene.control.behavior.OptionalBoolean;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -263,18 +265,21 @@ public abstract class Sources {
       }
     }
 
-    @Override public Reader reader() throws IOException {
-      final InputStream is;
-      if (path().endsWith(".gz")) {
-        final InputStream fis = openStream();
-        is = new GZIPInputStream(fis);
-      } else {
-        is = openStream();
-      }
-      return new InputStreamReader(is, StandardCharsets.UTF_8);
+    @Override
+    public Reader reader() throws IOException {
+        final InputStream is;
+        if (path().endsWith(".gz")) {
+          final InputStream fis = openStream();
+          // kp 如果是压缩文件，则返回 GZIP 输入流
+          is = new GZIPInputStream(fis);
+        } else {
+          is = openStream();
+        }
+        return new InputStreamReader(is, StandardCharsets.UTF_8);
     }
 
-    @Override public InputStream openStream() throws IOException {
+    @Override
+    public InputStream openStream() throws IOException {
       if (file != null) {
         return new FileInputStream(file);
       } else {

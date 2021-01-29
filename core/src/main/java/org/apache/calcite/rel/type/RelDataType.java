@@ -62,7 +62,7 @@ public interface RelDataType {
    * Gets the fields in a struct type.
    * The field count is equal to the size of the returned list.
    *
-   * fixme 返回某一类型的所有字段信息集合。
+   * kp 返回某一类型的所有字段信息集合。
    *
    * @return read-only list of fields
    */
@@ -78,6 +78,7 @@ public interface RelDataType {
 
   /**
    * Returns the number of fields in a struct type.
+   * tag 该结构体字段的个数。
    *
    * <p>This method is equivalent to
    * <code>{@link #getFieldList}.size()</code>.

@@ -54,9 +54,6 @@ public class CsvTranslatableTable extends CsvTable
     super(source, protoRowType);
   }
 
-  @Override public String toString() {
-    return "CsvTranslatableTable";
-  }
 
   /** Returns an enumerable over a given projection of the fields. */
   @SuppressWarnings("unused") // called from generated code
@@ -89,16 +86,25 @@ public class CsvTranslatableTable extends CsvTable
     throw new UnsupportedOperationException();
   }
 
-  @Override public RelNode toRel(
-      RelOptTable.ToRelContext context,
-      RelOptTable relOptTable) {
-    // Request all fields.
-    final int fieldCount = relOptTable.getRowType().getFieldCount();
-    final int[] fields = CsvEnumerator.identityList(fieldCount);
-    return new CsvTableScan(
-        context.getCluster(),
-        relOptTable,
-        this,
-        fields);
+  // TranslatableTable 的接口
+  @Override
+  public RelNode toRel(
+                       RelOptTable.ToRelContext context,
+                       RelOptTable relOptTable) {
+      // Request all fields.
+      final int fieldCount = relOptTable.getRowType().getFieldCount();
+
+      //
+      final int[] fields = CsvEnumerator.identityList(fieldCount);
+      return new CsvTableScan(
+          context.getCluster(),
+          relOptTable,
+          this,
+          fields);
+  }
+
+  @Override
+  public String toString() {
+    return "CsvTranslatableTable";
   }
 }

@@ -58,11 +58,10 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Relational operator that eliminates
- * duplicates and computes totals.
+ * Relational operator that eliminates(消除) duplicates and computes totals.
  *
  * <p>It corresponds to the {@code GROUP BY} operator in a SQL query
- * statement, together with the aggregate functions in the {@code SELECT}
+ * statement, together with the aggregate(聚合) functions in the {@code SELECT}
  * clause.
  *
  * <p>Rules:
@@ -471,7 +470,9 @@ public abstract class Aggregate extends SingleRel implements Hintable {
     return Group.induce(groupSet, groupSets);
   }
 
-  /** Describes the kind of roll-up. */
+  /**
+   * Describes the kind of roll-up(总计).
+   */
   public enum Group {
     SIMPLE,
     ROLLUP,

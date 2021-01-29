@@ -317,7 +317,9 @@ public enum SqlKind {
   /** Logical "OR" operator. */
   OR,
 
-  /** Logical "AND" operator. */
+  /**
+   * Logical "AND" operator.
+   */
   AND,
 
   // other infix

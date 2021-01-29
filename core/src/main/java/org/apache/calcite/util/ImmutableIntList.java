@@ -36,8 +36,9 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 /**
- * An immutable list of {@link Integer} values backed by an array of
- * {@code int}s.
+ * An immutable list of {@link Integer} values backed by an array of {@code int}s.
+ *
+ * tag 使用array保存数据的，不可变的list。
  */
 public class ImmutableIntList extends FlatLists.AbstractFlatList<Integer> {
   private final int[] ints;

@@ -36,6 +36,7 @@ import javax.annotation.Nonnull;
 /**
  * An expression formed by a call to an operator with zero or more expressions
  * as operands.
+ * kp 通过调用零个或多个表达式作为操作数的运算符形成的表达式。
  *
  * <p>Operators may be binary, unary, functions, special syntactic constructs
  * like <code>CASE ... WHEN ... END</code>, or even internally generated
@@ -52,7 +53,6 @@ import javax.annotation.Nonnull;
 public class RexCall extends RexNode {
 
   //~ Instance fields --------------------------------------------------------
-
   public final SqlOperator op;
   public final ImmutableList<RexNode> operands;
   public final RelDataType type;
@@ -252,7 +252,8 @@ public class RexCall extends RexNode {
     return this.normalized;
   }
 
-  @Override public boolean equals(Object o) {
+  @Override
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -267,7 +268,8 @@ public class RexCall extends RexNode {
         && type.equals(rexCall.type);
   }
 
-  @Override public int hashCode() {
+  @Override
+  public int hashCode() {
     if (hash == 0) {
       hash = RexNormalize.hashCode(this.op, this.operands);
     }

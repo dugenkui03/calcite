@@ -76,6 +76,7 @@ public abstract class RexNode {
 
   /**
    * Returns the kind of node this is.
+   * tag 返回当前节点的类型。
    *
    * @return Node kind, never null
    */

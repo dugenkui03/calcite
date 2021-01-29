@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 
 /**
  * Base class for lists whose contents are constant after creation.
+ * tag 不可变list类的抽象基类。
  *
  * @param <E> Element type
  */

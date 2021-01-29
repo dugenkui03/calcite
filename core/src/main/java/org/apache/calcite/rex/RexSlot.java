@@ -23,6 +23,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Abstract base class for {@link RexInputRef} and {@link RexLocalRef}.
+ *
+ * kp： 输入引用和本地引用的基类。
  */
 public abstract class RexSlot extends RexVariable {
   //~ Instance fields --------------------------------------------------------
@@ -35,6 +37,9 @@ public abstract class RexSlot extends RexVariable {
    * Creates a slot.
    *
    * @param index Index of the field in the underlying rowtype
+   *              行下标。
+   *
+   *
    * @param type  Type of the column
    */
   protected RexSlot(

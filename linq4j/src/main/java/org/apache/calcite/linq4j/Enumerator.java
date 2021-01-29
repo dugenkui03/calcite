@@ -93,7 +93,7 @@ public interface Enumerator<T> extends AutoCloseable {
    * @return {@code true} if the enumerator was successfully advanced to the
    *         next element; {@code false} if the enumerator has passed the end of
    *         the collection
-   *         fixme 移动游标，返回false表示已经到达尾部。
+   *         fixme 移动游标到下一个节点，返回false表示已经到达尾部； todo 也可能用户终止了请求执行。
    */
   boolean moveNext();
 

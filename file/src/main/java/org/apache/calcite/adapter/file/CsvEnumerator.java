@@ -72,19 +72,35 @@ public class CsvEnumerator<E> implements Enumerator<E> {
         (RowConverter<E>) converter(fieldTypes, fields));
   }
 
-  public CsvEnumerator(Source source, AtomicBoolean cancelFlag, boolean stream,
-      String[] filterValues, RowConverter<E> rowConverter) {
+  /**
+   * @param source 数据资源
+   * @param cancelFlag 用户是否取消了对查询的请求
+   * @param stream 数据源是否是流
+   * @param filterValues 过滤的数据：Scan表没有过滤
+   * @param rowConverter
+   */
+  public CsvEnumerator(Source source,
+                      AtomicBoolean cancelFlag,
+                      boolean stream,
+                      // todo 怎么根据filterValues过滤数据的
+                      String[] filterValues,
+                      RowConverter<E> rowConverter) {
     this.cancelFlag = cancelFlag;
     this.rowConverter = rowConverter;
+    // 获取 过滤列表 的不可变视图
     this.filterValues = filterValues == null ? null
         : ImmutableNullableList.copyOf(filterValues);
     try {
+      // 如果是流，则使用CsvStreamReader，
       if (stream) {
         this.reader = new CsvStreamReader(source);
       } else {
         this.reader = openCsv(source);
       }
-      this.reader.readNext(); // skip header row
+
+      // skip header row
+      // 跳过对表头的读取
+      this.reader.readNext();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -110,8 +126,12 @@ public class CsvEnumerator<E> implements Enumerator<E> {
     return new ArrayRowConverter(fieldTypes, fields, stream);
   }
 
-  /** Deduces the names and types of a table's columns by reading the first line
-   * of a CSV file. */
+  /**
+   * Deduces the names and types of a table's columns
+   * by reading the first line of a CSV file.
+   *
+   * kp 通过读取csv文件第一样，推断每一列的名称和类型
+   */
   static RelDataType deduceRowType(JavaTypeFactory typeFactory, Source source,
       List<CsvFieldType> fieldTypes) {
     return deduceRowType(typeFactory, source, fieldTypes, false);
@@ -119,15 +139,18 @@ public class CsvEnumerator<E> implements Enumerator<E> {
 
   /**
    * Deduces(推断) the names and types of a table's columns by reading the first line of a CSV file.
-   * 通过读取csv文件第一行，推断 schema 的信息。
+   * kp 通过读取csv文件第一行，推断 table 的类型信息
    *
    * @param typeFactory
    * @param source
-   * @param fieldTypes 存放结果
+   * @param fieldTypes kp 存放结果
    * @param stream
    * @return
    */
-  public static RelDataType deduceRowType(JavaTypeFactory typeFactory, Source source, List<CsvFieldType> fieldTypes, Boolean stream) {
+  public static RelDataType deduceRowType(JavaTypeFactory typeFactory,
+                                          Source source,
+                                          List<CsvFieldType> fieldTypes,
+                                          Boolean stream) {
     final List<RelDataType> types = new ArrayList<>();
     final List<String> names = new ArrayList<>();
     if (stream) {
@@ -188,16 +211,24 @@ public class CsvEnumerator<E> implements Enumerator<E> {
     return current;
   }
 
-  @Override public boolean moveNext() {
+  // 移动游标到下一个节点，返回false表示已经到达尾部
+  @Override
+  public boolean moveNext() {
     try {
-    outer:
-      for (;;) {
+      outer:
+      for (; ; ) {
+        // 如果用户执行了取消请求，则返回false。
         if (cancelFlag.get()) {
           return false;
         }
+
+        // 读取下一行数据，数据是使用逗号分割的
         final String[] strings = reader.readNext();
         if (strings == null) {
+          // 如果是流文件，则等待，然后重试
+          // 否则关闭reader、并返回false。
           if (reader instanceof CsvStreamReader) {
+            // 休眠2000毫秒，在继续读取
             try {
               Thread.sleep(CsvStreamReader.DEFAULT_MONITOR_DELAY);
             } catch (InterruptedException e) {
@@ -208,17 +239,25 @@ public class CsvEnumerator<E> implements Enumerator<E> {
           current = null;
           reader.close();
           return false;
-        }
+        } // end of "strings is null"
+
+        // 读取的数据不为空
+        // 检查是否有需要过滤的数据
         if (filterValues != null) {
           for (int i = 0; i < strings.length; i++) {
             String filterValue = filterValues.get(i);
             if (filterValue != null) {
+              // 如果需要过滤的数据和当前遍历的数据不相同
               if (!filterValue.equals(strings[i])) {
+                // label 是对于嵌套的循环、可以直接跳出内循环、在外循环继续。
+                /// kp 继续开始外层循环，内层循环之后 tag_1 处的代码不会执行。
                 continue outer;
               }
             }
           }
         }
+        // tag 1: 指针指向当前行数据
+        //        rowConverter包含字段的类型信息
         current = rowConverter.convertRow(strings);
         return true;
       }
@@ -253,82 +292,84 @@ public class CsvEnumerator<E> implements Enumerator<E> {
    *
    * @param <E> element type */
   abstract static class RowConverter<E> {
+
     abstract E convertRow(String[] rows);
 
+    // 将 value 转换为 fieldType 类型的数据
     @SuppressWarnings("JdkObsolete")
-    protected Object convert(CsvFieldType fieldType, String string) {
+    protected Object convert(CsvFieldType fieldType, String value) {
       if (fieldType == null) {
-        return string;
+        return value;
       }
       switch (fieldType) {
       case BOOLEAN:
-        if (string.length() == 0) {
+        if (value.length() == 0) {
           return null;
         }
-        return Boolean.parseBoolean(string);
+        return Boolean.parseBoolean(value);
       case BYTE:
-        if (string.length() == 0) {
+        if (value.length() == 0) {
           return null;
         }
-        return Byte.parseByte(string);
+        return Byte.parseByte(value);
       case SHORT:
-        if (string.length() == 0) {
+        if (value.length() == 0) {
           return null;
         }
-        return Short.parseShort(string);
+        return Short.parseShort(value);
       case INT:
-        if (string.length() == 0) {
+        if (value.length() == 0) {
           return null;
         }
-        return Integer.parseInt(string);
+        return Integer.parseInt(value);
       case LONG:
-        if (string.length() == 0) {
+        if (value.length() == 0) {
           return null;
         }
-        return Long.parseLong(string);
+        return Long.parseLong(value);
       case FLOAT:
-        if (string.length() == 0) {
+        if (value.length() == 0) {
           return null;
         }
-        return Float.parseFloat(string);
+        return Float.parseFloat(value);
       case DOUBLE:
-        if (string.length() == 0) {
+        if (value.length() == 0) {
           return null;
         }
-        return Double.parseDouble(string);
+        return Double.parseDouble(value);
       case DATE:
-        if (string.length() == 0) {
+        if (value.length() == 0) {
           return null;
         }
         try {
-          Date date = TIME_FORMAT_DATE.parse(string);
+          Date date = TIME_FORMAT_DATE.parse(value);
           return (int) (date.getTime() / DateTimeUtils.MILLIS_PER_DAY);
         } catch (ParseException e) {
           return null;
         }
       case TIME:
-        if (string.length() == 0) {
+        if (value.length() == 0) {
           return null;
         }
         try {
-          Date date = TIME_FORMAT_TIME.parse(string);
+          Date date = TIME_FORMAT_TIME.parse(value);
           return (int) date.getTime();
         } catch (ParseException e) {
           return null;
         }
       case TIMESTAMP:
-        if (string.length() == 0) {
+        if (value.length() == 0) {
           return null;
         }
         try {
-          Date date = TIME_FORMAT_TIMESTAMP.parse(string);
+          Date date = TIME_FORMAT_TIMESTAMP.parse(value);
           return date.getTime();
         } catch (ParseException e) {
           return null;
         }
       case STRING:
       default:
-        return string;
+        return value;
       }
     }
   }

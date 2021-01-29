@@ -19,6 +19,7 @@ package org.apache.calcite.linq4j;
 /**
  * Exposes the enumerator, which supports a simple iteration over a collection,
  * without the extension methods.
+ * kp
  *
  * <p>Just the bare methods, to make it easier to implement. Code that requires
  * the extension methods can use the static methods in {@link Extensions}.</p>
@@ -32,6 +33,8 @@ package org.apache.calcite.linq4j;
 public interface RawEnumerable<T> {
   /**
    * Returns an enumerator that iterates through a collection.
+   *
+   * tag 返回对集合可遍历的枚举器。
    */
   Enumerator<T> enumerator();
 }

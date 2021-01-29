@@ -29,6 +29,7 @@ import java.util.List;
 
 /**
  * An immutable list that may contain null values.
+ * kp：元素可为null的list。
  *
  * <p>If the list cannot contain null values, use
  * {@link com.google.common.collect.ImmutableList}.</p>

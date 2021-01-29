@@ -72,23 +72,27 @@ class CsvStreamReader extends CSVReader implements Closeable {
    * @param ignoreLeadingWhiteSpace If true, parser should ignore
    *  white space before a quote in a field
    */
-  private CsvStreamReader(Source source, char separator, char quoteChar,
-      char escape, int line, boolean strictQuotes,
-      boolean ignoreLeadingWhiteSpace) {
-    super(new StringReader("")); // dummy call to base constructor
-    contentQueue = new ArrayDeque<>();
-    TailerListener listener = new CsvContentListener(contentQueue);
-    tailer = Tailer.create(source.file(), listener, DEFAULT_MONITOR_DELAY,
-        false, true, 4096);
-    this.parser = new CSVParser(separator, quoteChar, escape, strictQuotes,
-        ignoreLeadingWhiteSpace);
-    this.skipLines = line;
-    try {
-      // wait for tailer to capture data
-      Thread.sleep(DEFAULT_MONITOR_DELAY);
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
-    }
+  private CsvStreamReader(Source source,
+                          char separator,
+                          char quoteChar,
+                          char escape,
+                          int line,
+                          boolean strictQuotes,
+                          boolean ignoreLeadingWhiteSpace) {
+        super(new StringReader("")); // dummy call to base constructor
+        contentQueue = new ArrayDeque<>();
+        TailerListener listener = new CsvContentListener(contentQueue);
+        // todo 直接 source.file() 还是 判断是否是url
+        tailer = Tailer.create(source.file(), listener, DEFAULT_MONITOR_DELAY,false, true, 4096);
+        this.parser = new CSVParser(separator, quoteChar, escape, strictQuotes,
+            ignoreLeadingWhiteSpace);
+        this.skipLines = line;
+        try {
+          // wait for tailer to capture data
+          Thread.sleep(DEFAULT_MONITOR_DELAY);
+        } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+        }
   }
 
   /**

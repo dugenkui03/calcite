@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Runtime context allowing access to the tables in a database.
  *
- * 可以访问数据库表的 运行时上下文。
+ * kp 可以访问数据库表的 运行时上下文。
  */
 public interface DataContext {
   ParameterExpression ROOT =
@@ -82,10 +82,14 @@ public interface DataContext {
     /** The Spark engine. Available if Spark is on the class path. */
     SPARK_CONTEXT("sparkContext", Object.class),
 
-    /** A mutable flag that indicates whether user has requested that the
+    /**
+     * A mutable flag that indicates whether user has requested that the
      * current statement be canceled. Cancellation may not be immediate, but
      * implementations of relational operators should check the flag fairly
-     * frequently and cease execution (e.g. by returning end of data). */
+     * frequently and cease execution (e.g. by returning end of data).
+     *
+     * kp 用户是否取消对档案查询语句的调用。
+     */
     CANCEL_FLAG("cancelFlag", AtomicBoolean.class),
 
     /** Query timeout in milliseconds.

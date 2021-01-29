@@ -61,11 +61,15 @@ public class CsvFilterableTable extends CsvTable implements FilterableTable {
     return "CsvFilterableTable";
   }
 
+  // kp RexNode 是行表达式
+  //
   @Override
   public Enumerable<Object[]> scan(DataContext root, List<RexNode> filters) {
+    // 通过读取csv文件第一行，推断csv列类型
     final List<CsvFieldType> fieldTypes = getFieldTypes(root.getTypeFactory());
+
     final String[] filterValues = new String[fieldTypes.size()];
-    filters.removeIf(filter -> addFilter(filter, filterValues));
+    filters.removeIf(rexNode -> addFilter(rexNode, filterValues));
     final List<Integer> fields = ImmutableIntList.identity(fieldTypes.size());
     final AtomicBoolean cancelFlag = DataContext.Variable.CANCEL_FLAG.get(root);
     return new AbstractEnumerable<Object[]>() {
@@ -77,21 +81,35 @@ public class CsvFilterableTable extends CsvTable implements FilterableTable {
     };
   }
 
-  private boolean addFilter(RexNode filter, Object[] filterValues) {
-    if (filter.isA(SqlKind.AND)) {
+  private boolean addFilter(RexNode rexNode, Object[] filterValues) {
+    // tag 如果是逻辑与，会对 filterValues 急性操作
+    if (rexNode.isA(SqlKind.AND)) {
       // We cannot refine(remove) the operands of AND,
       // it will cause o.a.c.i.TableScanNode.createFilterable filters check failed.
-      ((RexCall) filter).getOperands().forEach(subFilter -> addFilter(subFilter, filterValues));
-    } else if (filter.isA(SqlKind.EQUALS)) {
-      final RexCall call = (RexCall) filter;
+      ((RexCall) rexNode).getOperands().forEach(
+          subFilter ->
+              //  kp 递归了
+              // 没有根据返回boolean值进行任何处理
+              addFilter(subFilter, filterValues)
+      );
+    }
+
+    // 如果是 逻辑相等
+    else if (rexNode.isA(SqlKind.EQUALS)) {
+      final RexCall call = (RexCall) rexNode;
       RexNode left = call.getOperands().get(0);
+      // 如果左侧的操作数是 CAST
       if (left.isA(SqlKind.CAST)) {
         left = ((RexCall) left).operands.get(0);
       }
+
       final RexNode right = call.getOperands().get(1);
+
       if (left instanceof RexInputRef
           && right instanceof RexLiteral) {
+        // 行下标。
         final int index = ((RexInputRef) left).getIndex();
+        // fixme 重点：不懂就不懂，等debug的时候再看具体的例子吧，别瞎猜。
         if (filterValues[index] == null) {
           filterValues[index] = ((RexLiteral) right).getValue2().toString();
           return true;

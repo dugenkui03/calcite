@@ -75,6 +75,7 @@ public abstract class CsvTable extends AbstractTable {
   public List<CsvFieldType> getFieldTypes(RelDataTypeFactory typeFactory) {
     if (fieldTypes == null) {
       fieldTypes = new ArrayList<>();
+      // kp 通过读取csv文件第一行，推断 table 的类型信息
       CsvEnumerator.deduceRowType((JavaTypeFactory) typeFactory, source, fieldTypes, isStream());
     }
     return fieldTypes;

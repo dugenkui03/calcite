@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * RelDataTypeField represents the definition of a field in a structured
  * {@link RelDataType}.
- * tag: 某一个字段的类型信息。
+ * tag: 某一个字段的类型信息：字段名称、从0开始的下标、字段类型、
  *
  * <p>Extends the {@link java.util.Map.Entry} interface to allow convenient
  * inter-operation with Java collections classes. In any implementation of this
@@ -83,6 +83,8 @@ public interface RelDataTypeField extends Map.Entry<String, RelDataType> {
 
   /**
    * Returns true if this is a dynamic star field.
+   *
+   * tag "是否是动态的星状字段"。
    */
   boolean isDynamicStar();
 }
